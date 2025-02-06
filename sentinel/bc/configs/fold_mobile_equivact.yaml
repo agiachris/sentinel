@@ -1,0 +1,28 @@
+defaults:
+  - base
+
+env:
+  env_class: fold_mobile
+  dof: 7
+  eef_dim: 13
+  args:
+    max_episode_length: 50
+    cam_resolution: 256
+    deform_friction_coeff: 1.0
+    deform_elastic_stiffness: 150.0
+    # sim mobile specific args
+    pybullet_vis: false
+    keyboard_off: true
+    vis: true
+    freq: 5
+    ac_scale: 1
+    scale_mode: "real_src"
+
+agent:
+  agent_name: sim3
+
+model:
+  encoder:
+    c_dim: 32
+    backbone_args:
+      h_dim: 32

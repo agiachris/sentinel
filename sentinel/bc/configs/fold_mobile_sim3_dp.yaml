@@ -1,0 +1,10 @@
+defaults:
+  - fold_mobile_dp
+
+agent:
+  agent_name: sim3_dp
+
+model:
+  hidden_dim: 32
+  encoder:
+    backbone_type: vn_pointnet

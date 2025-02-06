@@ -1,0 +1,48 @@
+task_name: push_chair
+keyboard: false
+cam_ids:
+  - 21582473
+grasping_strategy: default
+xy_action_scale: 1
+z_action_scale: 1
+flip_agents: false
+use_dummy_zed: false
+use_dummy_pc: false
+freq: 3.0
+randomize_xy: 0.0
+randomize_rotation: 0.0
+floor_height: 0.0
+
+# Observation translational offset; transform to training data view.
+obs_offset: [3.17, -2.29, 0.0]  # [x, y, z]
+
+info:
+  # Note that here the arm z is relative to arm base, not relative to floor.
+  - robot_name: mobile_base3
+    
+    #################### SRC: HRI Room ####################
+    # Settings for circular table.
+    preinit_base_pose: [-3.05, 1.55, -1.57] # [0.20, -0.23, 0.0] [x, y, theta]  
+    base_corner_xys: [[-2.8, 1.45], [-3.2, 1.45], [-3.2, 2.45], [-2.8, 2.45]] # [c1, c2, c3, c4]
+    arm_limit: [[-3.4, -2.8], [1.6, 3.0], [0.335, 0.8]] # [+-x, +-y, +-z]
+    preinit_arm_posi: [0.6, 0.0, 0.2] # [x=front, y=left, z=up] RHF
+    preinit_arm_rot_degree: [90, 0, 90] # [rx, ry, rz]
+    fin_gripper_offset: [0., -0.015, 0.06]  # [fin gripper] extend 0.09 in z direction, -0.015 in y direction
+
+
+    ################# SRC: Domestic Suite #################
+
+    # Settings for circular table.
+    # preinit_base_pose: [0.20, 0.27, 0.0]
+    # base_corner_xys: [[0.5, -0.35], [-0.54, -0.35], [-0.54, 0.2], [0.5, 0.2]]
+    # arm_limit: [[-1.25, 0], [-0.35, 0.32], [0.335, 0.8]]
+
+    # Settings for rectangular table.
+    # preinit_base_pose: [0.2, 0.9, 0.0] # [0.20, -0.23, 0.0]  
+    # base_corner_xys: [[1.0, 0.6], [-0.7, 0.6], [-0.7, 1.2], [1.0, 1.2]]
+    # arm_limit: [[-1.6, 0.4], [0.6, 1.2], [0.335, 0.8]]
+    # base_corner_xys: [[1.0, 0.6], [-0.7, 0.6], [-0.7, 1.2], [1.0, 1.2]]
+    # arm_limit: [[-1.15, 3], [0, 1.2], [0.335, 0.8]]
+    # preinit_arm_posi: [0.6, 0.0, 0.2]
+    # preinit_arm_rot_degree: [90, 0, 90]
+    # fin_gripper_offset: [0., -0.015, 0.06]  # [fin gripper] extend 0.09 in z direction, -0.015 in y direction

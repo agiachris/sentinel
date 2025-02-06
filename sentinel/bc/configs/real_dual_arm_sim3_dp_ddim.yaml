@@ -1,0 +1,5 @@
+defaults:
+  - real_single_arm_sim3_dp_ddim
+
+env:
+  num_eef: 2

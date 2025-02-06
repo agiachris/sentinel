@@ -1,0 +1,43 @@
+defaults:
+  - real_arm_only
+
+training:
+  batch_size: 256
+  lr: 3e-5
+  weight_decay: 1e-6
+
+data:
+  dataset:
+    obs_horizon: ${model.obs_horizon}
+    pred_horizon: ${model.pred_horizon}
+    reduce_horizon_dim: false
+    latency:
+      state: 2
+      random: false
+
+agent:
+  agent_name: dp
+
+model:
+  ckpt_path: null
+  use_pretrained_feat: false
+  load_decoder: false
+  hidden_dim: 128
+  noise_scheduler:
+    _target_: diffusers.schedulers.scheduling_ddpm.DDPMScheduler
+    num_train_timesteps: 100
+    beta_schedule: squaredcos_cap_v2
+    clip_sample: true
+    prediction_type: epsilon
+  num_diffusion_iters: 100
+  obs_horizon: 2
+  ac_horizon: 8
+  pred_horizon: 16
+  obs_mode: "pc" # "state" or "pc" or "rgb"
+  encoder:
+    c_dim: ${model.hidden_dim}
+    backbone_type: pointnet
+    backbone_args:
+      h_dim: ${model.hidden_dim}
+      num_layers: 4
+      knn: 8

@@ -1,0 +1,8 @@
+defaults:
+  - real_arm_only_dp
+
+model:
+  noise_scheduler:
+    _target_: diffusers.schedulers.scheduling_ddim.DDIMScheduler
+    num_train_timesteps: 100
+  num_diffusion_iters: 8

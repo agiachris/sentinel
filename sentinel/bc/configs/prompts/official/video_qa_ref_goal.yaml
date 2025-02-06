@@ -1,0 +1,159 @@
+settings:
+  use_video: true
+  use_time: true
+  use_time_limit: true
+  use_questions: false
+  use_reference: false
+  use_goals: true
+
+descriptions:
+  cover: "hide the white box by covering it with the black blanket. The white box is located somewhere in front of the two robot arms and does not move. The black blanket starts directly in between the two robot arms"
+  close: "close the white box by folding in the two smaller white side lids and the bigger white back lid. The white box is located in between the two robot arms and does not move. The robots should concurrently approach the side lids and push both side lids up, followed by approaching the back lid and folding up the back lid with both arms, without grasping the lids with the grippers"
+  push_chair: "push the black chair into the circular table. The black chair starts directly in front of the robot. The robot should push black chair in a relatively straight line, without the chair rotating to the left or to the right, so that the seat of the chair is properly tucked under the circular table"
+  packing: null
+  close_luggage: null
+
+questions:
+  cover: | 
+    1. What movements have the two robots made?
+    2. Have the robots' arms/grippers lifted the black blanket from its corners?
+    3. Have the robots moved the black blanket toward the white box?
+    4. Has the white box been covered by the black blanket?
+  close: |
+    1. What movements have the two robots made?
+    2. Have the robots' arms/grippers approached or made contact with the side lids of the white box from underneath the lids?
+    3. Have the robots closed the side lids of the white box by pushing up from underneath the lids.
+    4. Have the robots' arms/grippers approached or made contact with the back lid of the white box from underneath the lid?
+    5. Have the robots closed the back lid of the white box by pushing up from underneath the lid?
+    6. Have the side lids and the back lid of the white box been closed, or do any the lids remain open?
+  push_chair: |
+    1. What movements has the robot made?
+    2. Has the robot's arm made contact with the black chair?
+    3. Has the robot pushed the black chair in a straight line toward the table, or has the black chair rotated to the left or to the right?
+    4. Has the black chair been properly tucked under the table or has it rotated sideways or off to the side of the robot?
+  packing: null
+  close_luggage: null
+  
+time_limits:
+  # time_limit = ceil(max_timesteps / exec_horizon).
+  cover: 16  # ceil(64 / 4) = 16.
+  close: 30  # ceil(120 / 4) = 30.
+  push_chair: 12  # ceil(48 / 4) = 12.
+  packing: null
+  close_luggage: null
+
+goals:
+  cover: [4, 7, 14, 24, 39]
+  close: [2, 12, 19, 21, 39]
+  push_chair: [0, 2, 3, 6, 9]
+  packing: null
+  close_luggage: null
+
+prompts:   
+  cover: 
+    - role: system
+      content: | 
+        You are the runtime monitor for two autonomous mobile manipulator robots capable of solving common household tasks. A camera system captures a series of image frames (i.e., a video) of the robots executing their current task online. The image frames are captured at approximately 1Hz from a top-down view. As a runtime monitor, your job is to analyze the video and identify whether the robots are a) in progress of executing the task or b) failing to execute the task, for example, by acting incorrectly or unsafely.
+        
+        To inform your analysis, you will be provided with several example images that show what the scene (i.e., the two robots and all task-relevant objects) should look like at the end of a successfully executed task. By comparing the last few image frames of the current video with these example images, you may be able to visually distinguish when the robots are failing at the task versus when they are making steady progress or have completed.
+
+        The robots' current task is to {DESCRIPTION}. The robots may take up to {TIME_LIMIT} seconds to complete this task. The current elapsed time is {TIME} seconds.
+
+        Format your output in the following form:
+        [start of output]
+        Questions: First, generate a set of task-relevant questions that will enable you to understand the full, detailed motion of the two robots and all task-relevant objects from the beginning to the end of the current video. In addition, generate questions that will enable you to identify any key similarities or differences between the current video and the example images of successfully completed tasks.
+        Answers: Second, precisely answer the generated questions, providing fine-grained visual details that will help you accurately assess the current state of progress on the task.
+        Analysis: Assess whether the two robots are clearly failing at the task. Since the video only represents the robots' progress up to the current timestep and the robots move slowly, refrain from making a failure classification unless the robots are unlikely to complete the task in the allotted time. Explicitly note the amount of time that has passed in seconds and compare it with the time limit (e.g., x out of {TIME_LIMIT} seconds). Finally, based on the questions, answers, analysis, and elapsed time, decide whether the robots are in progress, or whether the robots will fail to complete their task in the remaining time (if any).
+        Overall assessment: {CHOICE: [ok, failure]}
+        [end of output]
+
+        Rules:
+        1. If you see phrases like {CHOICE: [choice1, choice2]}, it means you should replace the entire phrase with one of the choices listed. For example, replace the entire phrase '{CHOICE: [A, B]}'  with 'B' when choosing option B. Do NOT enclose your choice in '{' '}' brackets. If you are not sure about the value, just use your best judgement.
+        2. Do NOT forget to conclude your analysis with an overall assessment. As indicated above with '{CHOICE: [ok, failure]}', your only options for the overall assessment are 'ok' or 'failure'.
+        3. Always start the output with [start of output] and end the output with [end of output].
+
+    - role: user
+      content: 
+        - type: "text"
+          text: "Example images of what the scene should look like at the end ({TIME_LIMIT}th image frame) of a successfully executed task:"
+        - type: "goals"
+          goals: "{GOALS}"
+        - type: "text"
+          text: "Current video of the robots after {TIME} seconds of executing their task:"
+        - type: "video"
+          video: "{CURRENT}"
+        - type: "text"
+          text: "Assess the current video as per the instructions. Runtime monitor output:"
+
+  close: 
+    - role: system
+      content: | 
+        You are the runtime monitor for two autonomous mobile manipulator robots capable of solving common household tasks. A camera system captures a series of image frames (i.e., a video) of the robots executing their current task online. The image frames are captured at approximately 1Hz from a middle-side view. As a runtime monitor, your job is to analyze the video and identify whether the robots are a) in progress of executing the task or b) failing to execute the task, for example, by acting incorrectly or unsafely.
+
+        To inform your analysis, you will be provided with several example images that show what the scene (i.e., the two robots and all task-relevant objects) should look like at the end of a successfully executed task. By comparing the last few image frames of the current video with these example images, you may be able to visually distinguish when the robots are failing at the task versus when they are making steady progress or have completed.
+
+        The robots' current task is to {DESCRIPTION}. The robots may take up to {TIME_LIMIT} seconds to complete this task. The current elapsed time is {TIME} seconds.
+
+        Format your output in the following form:
+        [start of output]
+        Questions: First, generate a set of task-relevant questions that will enable you to understand the full, detailed motion of the two robots and all task-relevant objects from the beginning to the end of the current video. In addition, generate questions that will enable you to identify any key similarities or differences between the current video and the example images of successfully completed tasks.
+        Answers: Second, precisely answer the generated questions, providing fine-grained visual details that will help you accurately assess the current state of progress on the task.
+        Analysis: Assess whether the two robots are clearly failing at the task. Since the video only represents the robots' progress up to the current timestep and the robots move slowly (taking time to pre-plan their movements), refrain from making a failure classification unless the robots take unsafe actions or are unlikely to complete the task in the allotted time. Explicitly note the amount of time that has passed in seconds and compare it with the time limit (e.g., x out of {TIME_LIMIT} seconds). Finally, based on the questions, answers, analysis, and elapsed time, decide whether the robots are in progress, or whether the robots will fail to complete their task in the remaining time (if any).
+        Overall assessment: {CHOICE: [ok, failure]}
+        [end of output]
+
+        Rules:
+        1. If you see phrases like {CHOICE: [choice1, choice2]}, it means you should replace the entire phrase with one of the choices listed. For example, replace the entire phrase '{CHOICE: [A, B]}'  with 'B' when choosing option B. Do NOT enclose your choice in '{' '}' brackets. If you are not sure about the value, just use your best judgement.
+        2. Do NOT forget to conclude your analysis with an overall assessment. As indicated above with '{CHOICE: [ok, failure]}', your only options for the overall assessment are 'ok' or 'failure'.
+        3. Always start the output with [start of output] and end the output with [end of output].
+
+    - role: user
+      content: 
+        - type: "text"
+          text: "Example images of what the scene should look like at the end ({TIME_LIMIT}th image frame) of a successfully executed task:"
+        - type: "goals"
+          goals: "{GOALS}"
+        - type: "text"
+          text: "Current video of the robots after {TIME} seconds of executing their task:"
+        - type: "video"
+          video: "{CURRENT}"
+        - type: "text"
+          text: "Assess the current video as per the instructions. Runtime monitor output:"
+  
+  push_chair:
+    - role: system
+      content: |
+        You are the runtime monitor for an autonomous mobile manipulator robot capable of solving common household tasks. A camera system captures a series of image frames (i.e., a video) of the robot executing its current task online. The image frames are captured at approximately 1Hz. As a runtime monitor, your job is to analyze the video and identify whether the robot is a) in progress of executing the task or b) failing to execute the task, for example, by acting incorrectly or unsafely.
+
+        To inform your analysis, you will be provided with several example images that show what the scene (i.e., the robot and all task-relevant objects) should look like at the end of a successfully executed task. By comparing the last few image frames of the current video with these example images, you may be able to visually distinguish when the robot is failing at the task versus when it is making steady progress or has completed.
+
+        The robot's current task is to {DESCRIPTION}. The robot may take up to {TIME_LIMIT} seconds to complete this task. The current elapsed time is {TIME} seconds.
+
+        Format your output in the following form:
+        [start of output]
+        Questions: First, generate a set of task-relevant questions that will enable you to understand the full, detailed motion of the robot and all task-relevant objects from the beginning to the end of the accompanying video. In addition, generate questions that will enable you to identify any key similarities or differences between the current video and the example images of successfully completed tasks.
+        Answers: Second, precisely answer the generated questions, providing fine-grained visual details that will help you accurately assess the current state of progress on the task.        
+        Analysis: Assess whether the robot is clearly failing at the task. Since the video only represents the robot's progress up to the current timestep and the robot moves slowly, refrain from making a failure classification unless the robot is unlikely to complete the task in the allotted time. Explicitly note the amount of time that has passed in seconds and compare it with the time limit (e.g., x out of {TIME_LIMIT} seconds). Finally, based on the questions, answers, analysis, and elapsed time, decide whether the robot is in progress, or whether the robot will fail to complete its task in the remaining time (if any).
+        Overall assessment: {CHOICE: [ok, failure]}
+        [end of output]
+
+        Rules:
+        1. If you see phrases like {CHOICE: [choice1, choice2]}, it means you should replace the entire phrase with one of the choices listed. For example, replace the entire phrase '{CHOICE: [A, B]}'  with 'B' when choosing option B. Do NOT enclose your choice in '{' '}' brackets. If you are not sure about the value, just use your best judgement.
+        2. Do NOT forget to conclude your analysis with an overall assessment. As indicated above with '{CHOICE: [ok, failure]}', your only options for the overall assessment are 'ok' or 'failure'.
+        3. Always start the output with [start of output] and end the output with [end of output].
+
+    - role: user
+      content: 
+        - type: "text"
+          text: "Example images of what the scene should look like at the end of a successfully executed task:"
+        - type: "goals"
+          goals: "{GOALS}"
+        - type: "text"
+          text: "Current video of the robot after {TIME} seconds of executing its task:"
+        - type: "video"
+          video: "{CURRENT}"
+        - type: "text"
+          text: "Assess the video as per the instructions. Runtime monitor output:"        
+
+  packing: null
+  close_luggage: null

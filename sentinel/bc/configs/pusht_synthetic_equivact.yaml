@@ -1,0 +1,33 @@
+defaults:
+  - base
+
+env:
+  env_class: pusht
+  num_eef: 1
+  dof: 3
+  eef_dim: 9
+  args:
+    max_episode_length: 200
+    render_size: 512
+    legacy: false
+    block_cog: null
+    damping: null
+    freq: 10
+
+agent:
+  agent_name: sim3
+
+data:
+  dataset:
+    num_points: 8
+    shuffle_pc: false
+
+model:
+  obs_mode: pc2
+  ac_mode: abs
+  encoder:
+    c_dim: 32
+    backbone_args:
+      h_dim: 32
+      num_layers: 2
+      knn: 4

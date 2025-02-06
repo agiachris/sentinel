@@ -1,0 +1,2 @@
+class SafetyCheckError(Exception):
+    pass

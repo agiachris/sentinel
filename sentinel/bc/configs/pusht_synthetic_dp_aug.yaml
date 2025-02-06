@@ -1,0 +1,55 @@
+defaults:
+  - base
+
+env:
+  env_class: pusht
+  num_eef: 1
+  eef_dim: 9
+  dof: 3
+  args:
+    legacy: false
+    block_cog: null
+    damping: null
+    render_size: 512
+    max_episode_length: 200
+
+training:
+  batch_size: 256
+  lr: 3e-5
+  weight_decay: 1e-6
+
+data:
+  dataset:
+    num_points: 8
+    path: null
+    obs_horizon: ${model.obs_horizon}
+    pred_horizon: ${model.pred_horizon}
+    reduce_horizon_dim: false
+    shuffle_pc: false
+    aug_center: [256., 256., 0.]
+    aug_scale_pos: 10
+
+agent:
+  agent_name: dp
+
+model:
+  use_pretrained_feat: false
+  load_decoder: false
+  hidden_dim: 64
+  noise_scheduler:
+    _target_: diffusers.schedulers.scheduling_ddpm.DDPMScheduler
+    num_train_timesteps: 100
+    beta_schedule: squaredcos_cap_v2
+    clip_sample: true
+    prediction_type: epsilon
+  obs_horizon: 2
+  ac_horizon: 8
+  pred_horizon: 16
+  obs_mode: "pc"
+  encoder:
+    c_dim: ${model.hidden_dim}
+    backbone_type: pointnet
+    backbone_args:
+      h_dim: ${model.hidden_dim}
+      num_layers: 2
+      knn: 8

@@ -1,0 +1,115 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+}
+
+.column {
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 50%;
+}
+
+.container-nopad {
+    margin: 0;
+    padding-top: 0;
+    box-sizing: border-box;
+    border: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px; /* Minimum height for when no content is present */
+    position: relative;
+}
+
+.container-column {
+    margin: 2em;
+    padding-top: 0;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.h3 {
+    font-weight: bold;
+    width: 100%;
+    height: 4em;
+    text-align: center;
+    line-height: 4em;
+    margin: 0;
+    padding: 0;
+    font-size: 1em;
+}
+
+#point-cloud-container {
+    height: calc(100vh - 4em); /* Viewport height minus margins and bottom text height */
+}
+
+#canvas-wrapper {
+    width: 100%;
+    height: 100%;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: content-box;
+}
+
+#image-container {
+    height: calc((100vh - 10em) / 2); /* Half of the remaining space */
+}
+
+#mask-container {
+    height: calc((100vh - 10em) / 2); /* Half of the remaining space */
+}
+
+#camera-image, #segmentation-mask {
+    width: 100%;
+    height: calc((100vh - 18em) / 2);
+    object-fit: contain; /* Ensures the image is scaled uniformly */
+    background-color: #222;
+}
+
+#elapsed-time-container {
+    margin: 2em;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    height: 2em;
+    line-height: 2em;
+    text-align: center;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex: 1 1 100%; /* Each container takes full width on small screens */
+        min-height: 200px; /* Maintain a minimum height */
+    }
+
+    #point-cloud-container, #image-container, #mask-container {
+        height: auto; /* Let the height be determined by content size */
+    }
+
+    #elapsed-time-container {
+        position: relative; /* Make sure it's at the end of the document flow */
+        margin: 2em 0;
+    }
+}

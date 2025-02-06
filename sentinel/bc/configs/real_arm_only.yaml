@@ -1,0 +1,20 @@
+defaults:
+  - base
+
+env:
+  env_class: real
+  num_eef: 1
+  dof: 7
+  eef_dim: 13
+  args:
+    use_vision_module: true
+    prompt_lists:
+      cup: ["red cup", "black square plate"]
+
+data:
+  dataset_class: cloth_real
+  dataset:
+    num_points: 2048
+    vel_scale: 1.0
+    z_offset: 0.0
+    xy_offset: 0.0

@@ -1,0 +1,147 @@
+defaults:
+  - robot_info: base
+
+prefix: default
+device: cuda
+mode: train
+log_dir: logs/bc/${mode}
+eval_data_path: null
+use_wandb: true
+seed: 0
+
+mp:
+  use_lock: false
+
+debug:
+  vis_eval: false
+  debug_7dof: false
+  debug_speed: false
+  args_for_7dof:
+    zero_out_obs_rot: false # Modify observation
+    zero_out_ac_xyz_trans: false
+    zero_out_ac_rot: false
+
+agent:
+  agent_name: sim3
+
+env:
+  env_class: ???
+  num_eef: 2
+  eef_dim: 3 # state dim per eef
+  dof: 4
+  vectorize: false
+  args:
+    agent_name: ${agent.agent_name} # for different init pose
+    num_eef: ${env.num_eef}
+    eef_dim: ${env.eef_dim}
+    dof: ${env.dof}
+    seed: ${seed}
+    robot_info: ${robot_info}
+    obs_mode: ${model.obs_mode}
+    ac_mode: ${model.ac_mode}
+    use_pos_actions: false
+    vis: false
+    debug: false
+    sim_frequency: 500
+    sim_gravity: -9.8
+    direct_control: false
+    randomize_rotation: false
+    randomize_articulation: false
+    deform_obj: "cloth/000000.obj"
+    deform_randomize_scale: true
+    deform_bending_stiffness: 0.01
+    deform_damping_stiffness: 1.0
+    deform_elastic_stiffness: 300.0
+    deform_friction_coeff: 10.0
+    cam_randomize: false
+    cam_resolution: 240
+    scale_low: 1.0
+    scale_high: 1.0
+    scale_aspect_limit: 100.0
+    max_episode_length: ???
+    ac_repeat: 10
+    ac_noise: 0.0
+    ac_scale: 1.0
+    data_path: ???
+    cam_fov: 30
+    cam_dist: 2.0
+    cam_yaws: [0]
+    cam_pitches: [-75]
+    cam_outdir: ${log_dir}
+    floor_texture_fname: "dark_carpet.jpg"
+    uniform_scaling: false
+    gripper_name: "suction"
+    deform_exact_scale: null
+    rigid_exact_scale: null
+    scale_mode: "sim"
+    init_pose_mode: "sim"
+    mm_ac_scale: 1
+    num_points: ${data.dataset.num_points}
+    kp: 2.0
+    kd: 2.0
+    use_vision_module: false
+    vision_module_args: null
+
+data:
+  dataset_class: cloth_synthetic
+  dataset:
+    num_training_steps: ???
+    path: ???
+    num_points: 1024
+    num_augment: 0
+    same_aug_per_sample: true
+    aug_keep_original: true
+    aug_scale_low: 0.5
+    aug_scale_high: 1.5
+    aug_scale_aspect_limit: 1.0
+    aug_scale_rot: -1
+    aug_scale_pos: 0.1
+    aug_zero_z_offset: false
+    aug_center: [0., 0., 0.]
+    reduce_horizon_dim: true
+    shuffle_pc: true
+    num_workers: 12
+    dof: ${env.dof}
+    num_eef: ${env.num_eef}
+    eef_dim: ${env.eef_dim}
+    zero_out_obs_rot: ${debug.args_for_7dof.zero_out_obs_rot}
+    min_demo_length: 15
+
+model:
+  model_name: equi_contrast
+  encoder_class: sim3_encoder
+  encoder:
+    c_dim: 128
+    backbone_type: vn_pointnet
+    backbone_args:
+      h_dim: 128
+      c_dim: ${model.encoder.c_dim}
+      num_layers: 4
+      knn: 32
+  obs_mode: "pc"
+  ac_mode: "rel"
+  ckpt_path: null
+  use_torch_compile: false
+  use_normalization: true
+
+training:
+  batch_size: 64
+  num_epochs: 2000
+  lr: 0.003
+  weight_decay: 1e-6
+  offset_loss_weight: 20.0
+  gripper_loss_weight: 1.0
+  num_eval_episodes: 10
+  eval_interval: 100
+  save_interval: 50
+  vis_interval: 100
+  sigma: 0.01
+  ckpt: null
+
+eval:
+  last_ckpt: 1999
+  num_ckpts_to_eval: 5
+
+hydra:
+  run:
+    dir: ${log_dir}/${prefix}

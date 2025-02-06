@@ -1,0 +1,9 @@
+defaults:
+  - pusht_synthetic_dp
+
+agent:
+  agent_name: sim3_dp
+
+model:
+  encoder:
+    backbone_type: vn_pointnet

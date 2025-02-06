@@ -1,0 +1,37 @@
+defaults:
+  - base
+
+env:
+  env_class: real
+  num_eef: 1
+  dof: 7
+  eef_dim: 13
+  args:
+    max_episode_length: 120
+    prompt_lists:
+      cover: ["brown box", "cloth"]
+      # push_chair: ["chair", "desk"]
+      push_chair: ["black chair", "round table"]
+      # push_chair: ["bamboo box", "desk"]
+
+      close_luggage: ["open luggage"]
+      fold: ["gray towel"]
+      # fold: ["long blanket"]
+      make_bed: ["gray comforter"]
+      unfold: ["gray comforter"]
+
+      # laundry_load: ["blue cloth", "two black laundary machines"]
+      laundry_load: ["blue cloth", "dark gray open laundry machine"]
+      laundry_door: ["left laundary machine"]
+      # load_shoes: ["beige slippers", "shoe rack"]
+      load_shoes: ["beige shoes pair", "silver rack"]
+      
+      packing: ["open luggage", "blue cap"] # "blue cap"] # "gray towel roll"] # "blue shorts"] # "bag of white shirt"] # ["opened luggage", "bag with white shirt", "items in luggage"]
+      lift: ["wood and white table", "woven basket"]
+
+
+data:
+  dataset_class: cloth_synthetic
+
+agent:
+  agent_name: sim3

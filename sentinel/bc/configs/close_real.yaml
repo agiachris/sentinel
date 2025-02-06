@@ -1,0 +1,27 @@
+defaults:
+  - base
+
+env:
+  env_class: real
+  dof: 7
+  eef_dim: 13
+  args:
+    max_episode_length: 120
+    use_vision_module: true
+    prompt_lists:
+      close: ["brown box"]
+
+data:
+  dataset_class: cloth_real
+  dataset:
+    path: null
+    path_img: null
+    vel_scale: 10.0
+    z_offset: 0.0
+    xy_offset: 0.0
+
+agent:
+  agent_name: sim3
+
+model:
+  ckpt_path: null

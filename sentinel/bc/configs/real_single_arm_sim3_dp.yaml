@@ -1,0 +1,11 @@
+defaults:
+  - real_single_arm_dp
+
+agent:
+  agent_name: sim3_dp
+
+model:
+  hidden_dim: 32
+  use_pretrained_feat: false
+  encoder:
+    backbone_type: vn_pointnet

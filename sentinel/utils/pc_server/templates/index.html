@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Camera Data Viewer</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three-addons@1.2.0/build/three-addons.min.js"></script>
+</head>
+<body>
+    <div class="column">
+        <div id="point-cloud-container" class="container-column">
+            <div class="h3">Point Cloud</div>
+            <div id="canvas-wrapper"></div>
+        </div>
+    </div>
+    <div class="column">
+        <div id="image-container" class="container-column">
+            <div class="h3">Image</div>
+            <img id="camera-image" src="" alt="Camera Image">
+        </div>
+        <div id="mask-container" class="container-column">
+            <div class="h3">Segmentation Mask</div>
+            <img id="segmentation-mask" src="" alt="Segmentation Mask">
+        </div>
+        <div id="elapsed-time-container">
+            <p>Last elapsed time: <span id="elapsed-time">0.0</span> seconds; last processing time: <span id="process-elapsed-time">0.0</span> seconds</p>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js')}}"></script>
+</body>
+</html>

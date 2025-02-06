@@ -1,0 +1,54 @@
+defaults:
+  - base
+
+env:
+  env_class: cover_mobile
+  dof: 7
+  eef_dim: 13
+  args:
+    max_episode_length: 25
+    cam_resolution: 256
+    # sim mobile specific args
+    pybullet_vis: false
+    keyboard_off: true
+    vis: true
+    freq: 3
+    ac_scale: 1
+    scale_mode: "real_src"
+
+training:
+  batch_size: 256
+  lr: 3e-5
+  weight_decay: 1e-6
+
+data:
+  dataset:
+    path: null
+    obs_horizon: ${model.obs_horizon}
+    pred_horizon: ${model.pred_horizon}
+    reduce_horizon_dim: false
+
+agent:
+  agent_name: dp
+
+model:
+  use_pretrained_feat: false
+  load_decoder: false
+  hidden_dim: 128
+  noise_scheduler:
+    _target_: diffusers.schedulers.scheduling_ddpm.DDPMScheduler
+    num_train_timesteps: 100
+    beta_schedule: squaredcos_cap_v2
+    clip_sample: true
+    prediction_type: epsilon
+  obs_horizon: 2
+  ac_horizon: 8
+  pred_horizon: 16
+  obs_mode: "pc"
+  encoder:
+    c_dim: ${model.hidden_dim}
+    backbone_type: pointnet
+    backbone_args:
+      h_dim: ${model.hidden_dim}
+      num_layers: 4
+      knn: 8
