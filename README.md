@@ -51,7 +51,7 @@ pyenv install 3.10.13 # Install Python version.
 git clone https://github.com/agiachris/sentinel.git
 cd sentinel
 
-# Install Poetry: https://python-poetry.org/docs/#installation
+# Install Poetry: see https://python-poetry.org/docs/#installation
 # Install dependencies and activate virtual environment.
 poetry install
 poetry shell
@@ -59,7 +59,7 @@ poetry shell
 # Install extra pip dependencies.
 pip install -r requirements.txt
 
-# Install PyTorch3D prebuilt wheel: https://github.com/facebookresearch/pytorch3d/blob/main/INSTALL.md
+# Install PyTorch3D prebuilt wheel: see https://github.com/facebookresearch/pytorch3d/blob/main/INSTALL.md
 # E.g., for Python 3.10, CUDA 11.8, PyTorch 2.0.0 
 pip install --no-index --no-cache-dir pytorch3d -f https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py310_cu118_pyt200/download.html
 ```
@@ -117,7 +117,7 @@ export GOOGLE_API_KEY=...       # If evaluating Gemini.
 </details>
 
 #### Visualizing Results
-Notebooks for rendering figures/plots of failure detection results can be found in `./notebooks/final_results`. 
+Notebooks for rendering figures/plots of failure detection results can be found in [`./notebooks/final_results`](https://github.com/agiachris/sentinel/tree/main/notebooks/final_results). 
 
 
 ## Generating Custom Datasets 🏗️
@@ -148,14 +148,14 @@ Modify `compute_rollout_actions_<env>.sh` as needed to create new distribution s
 
 **Settings**: Datasets directories are created based on the `date` parameter in `compute_rollout_actions_<env>.sh`. Adjust it from `date=<enter_date>` to the current date before running dataset generation. 
 
-**Downstream evaluation**: Failure detection methods can only be evaluated (see [Evaluate Failure Detectors](#evaluate-failure-detectors-)) on datasets that have been specifically generated to support their operation (i.e., pre-computing and storing the necessary tensors). Before running a given `compute_rollout_actions_<env>.sh` script, please read its corresponding `evaluate_ood_detectors_<env>.sh` script.
+**Downstream evaluation**: Failure detection methods can only be evaluated (as per [Evaluate Failure Detectors](#evaluate-failure-detectors-)) on datasets that have been specifically generated to support their operation (i.e., pre-computing and storing the necessary tensors). Before running a given `compute_rollout_actions_<env>.sh` script, please read its corresponding `evaluate_ood_detectors_<env>.sh` script.
 
 </details>
 
 
 ---
 ## Citation 🏷️
-Sentinel is offered under the [MIT License (TODO)]() agreement. 
+Sentinel is offered under the [MIT License](https://github.com/agiachris/sentinel/blob/main/LICENSE) agreement. 
 If you find Sentinel useful, please consider citing our work:
 ```
 @inproceedings{AgiaSinhaEtAl2024,
